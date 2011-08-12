@@ -1,0 +1,29 @@
+Arduino-LED-Matrix-Shield is an Eagle project combining the MAX7219
+(or MAX7221) LED driver and a small 8x8 LED matrix.
+
+=======
+= BOM =
+=======
+
+Qty     Part                            Sparkfun SKU
+--------------------------------------------------------
+1       MAX7219CNG                      COM-09622
+1       8x8 LED Matrix                  COM-00681
+1       10uF Capacitor
+1       .1uF Capacitor
+1       22k resistor
+1       2.2k resistor
+1       6 pin male header - long
+1       8 pin male header - long
+2       12 pin female header (optional)
+1       24 pin DIP socket (optional)
+
+The circuit is described here:
+http://arduino.cc/playground/Main/MAX72XXHardware
+
+There are 2 board designs included in the Eagle project. v0.1 is the
+board with the circuit laid out such that the LED matrix can be
+soldered direclty to the board. The v0.2 board is laid out with the
+matrix driver chip underneath the matrix - necessitating that the
+matrix is mounted into some female headers in order to raise it up
+enough to clear the driver chip.
