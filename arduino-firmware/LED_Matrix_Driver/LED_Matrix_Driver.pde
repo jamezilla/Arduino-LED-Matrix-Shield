@@ -1,7 +1,8 @@
 #include <pins_arduino.h>
-#include <TimerOne.h>
-#include "MsTimer2.h"
+//#include <TimerOne.h>
+#include <MsTimer2.h>
 
+#define DEBUG_TIMER 1
 #define MAX_IN_USE 1    //change this variable to set how many MAX7219's you'll use
 
 #define DIN        4
@@ -34,7 +35,8 @@ volatile uint8_t din_bitmask;
 volatile uint8_t *load_port;
 volatile uint8_t load_bitmask;
 
-volatile uint8_t levels[64];
+
+// volatile uint8_t levels[64];
 
 // generates the output/input registers and bitmasks needed for fastDigtialWrite()
 void cacheRegisters()
@@ -60,20 +62,87 @@ inline void fastDigitalWrite(volatile uint8_t* port, volatile uint8_t mask, bool
 }
 
 inline void putByte(byte data) {
-  byte i = 8;
-  byte mask;
-  while(i > 0) {
-    mask = 0x01 << (i - 1);      // get bitmask
-    fastDigitalWrite(clk_port, clk_bitmask, LOW);    // tick
-    if (data & mask){            // choose bit
-      fastDigitalWrite(din_port, din_bitmask, HIGH);// send 1
-    } 
-    else {
-      fastDigitalWrite(din_port, din_bitmask, LOW); // send 0
-    }
-    fastDigitalWrite(clk_port, clk_bitmask, HIGH);   // tock
-    --i;                         // move to lesser bit
-  }
+
+  // == bit 8 (most significant)
+  fastDigitalWrite(clk_port, clk_bitmask, LOW);    // tick
+
+  if (data & 0x80)            // choose bit
+    fastDigitalWrite(din_port, din_bitmask, HIGH);// send 1
+  else 
+    fastDigitalWrite(din_port, din_bitmask, LOW); // send 0
+
+  fastDigitalWrite(clk_port, clk_bitmask, HIGH);   // tock
+
+  // == bit 7
+  fastDigitalWrite(clk_port, clk_bitmask, LOW);    // tick
+
+  if (data & 0x40)
+    fastDigitalWrite(din_port, din_bitmask, HIGH);// send 1
+  else 
+    fastDigitalWrite(din_port, din_bitmask, LOW); // send 0
+
+  fastDigitalWrite(clk_port, clk_bitmask, HIGH);   // tock
+
+  // == bit 6
+  fastDigitalWrite(clk_port, clk_bitmask, LOW);    // tick
+
+  if (data & 0x20)
+    fastDigitalWrite(din_port, din_bitmask, HIGH);// send 1
+  else 
+    fastDigitalWrite(din_port, din_bitmask, LOW); // send 0
+
+  fastDigitalWrite(clk_port, clk_bitmask, HIGH);   // tock
+
+  // == bit 5
+  fastDigitalWrite(clk_port, clk_bitmask, LOW);    // tick
+
+  if (data & 0x10)
+    fastDigitalWrite(din_port, din_bitmask, HIGH);// send 1
+  else 
+    fastDigitalWrite(din_port, din_bitmask, LOW); // send 0
+
+  fastDigitalWrite(clk_port, clk_bitmask, HIGH);   // tock
+
+  // == bit 4
+  fastDigitalWrite(clk_port, clk_bitmask, LOW);    // tick
+
+  if (data & 0x8)
+    fastDigitalWrite(din_port, din_bitmask, HIGH);// send 1
+  else 
+    fastDigitalWrite(din_port, din_bitmask, LOW); // send 0
+
+  fastDigitalWrite(clk_port, clk_bitmask, HIGH);   // tock
+
+  // == bit 3
+  fastDigitalWrite(clk_port, clk_bitmask, LOW);    // tick
+
+  if (data & 0x4)
+    fastDigitalWrite(din_port, din_bitmask, HIGH);// send 1
+  else 
+    fastDigitalWrite(din_port, din_bitmask, LOW); // send 0
+
+  fastDigitalWrite(clk_port, clk_bitmask, HIGH);   // tock
+
+  // == bit 2
+  fastDigitalWrite(clk_port, clk_bitmask, LOW);    // tick
+
+  if (data & 0x2)
+    fastDigitalWrite(din_port, din_bitmask, HIGH);// send 1
+  else 
+    fastDigitalWrite(din_port, din_bitmask, LOW); // send 0
+
+  fastDigitalWrite(clk_port, clk_bitmask, HIGH);   // tock
+
+  // == bit 1 (least significant)
+  fastDigitalWrite(clk_port, clk_bitmask, LOW);    // tick
+
+  if (data & 0x01)
+    fastDigitalWrite(din_port, din_bitmask, HIGH);// send 1
+  else 
+    fastDigitalWrite(din_port, din_bitmask, LOW); // send 0
+
+  fastDigitalWrite(clk_port, clk_bitmask, HIGH);   // tock
+
 }
 
 // maxSingle is the "easy"  function to use for a
@@ -148,6 +217,8 @@ void clearDisplay(void) {
 
 #ifdef DEBUG_TIMER
 
+long loop_count = 0;
+
 void report() {
   Serial.println(loop_count);
   loop_count = 0;
@@ -155,16 +226,13 @@ void report() {
 
 #endif
 
-void foo(){
-}
-
 void setup () {
   Serial.begin(9600);
 
- initialize the dim levels
-  for(int i=0; i<64; i++) {
-    levels[i] = 0;
-  }
+   //initialize the dim levels
+  // for(int i=0; i<64; i++) {
+  //   levels[i] = 0;
+  // }
 
   // generate port/pin/mask mappings needed for fastDigitalWrite()
   cacheRegisters();
@@ -175,14 +243,11 @@ void setup () {
 
   initDisplay();
 
-  //#ifdef DEBUG_TIMER
-
-
-  //  MsTimer2::set(1000, report); 
-  MsTimer2::set(1000, foo); 
+#ifdef DEBUG_TIMER
+  loop_count = 0;
+  MsTimer2::set(1000, report); 
   MsTimer2::start();
-  //Serial.println(MsTimer2::tcnt2);
-  //#endif
+#endif
 }  
 
 void loop () {
@@ -200,33 +265,14 @@ void loop () {
   //  }
 
   // turn on the diagonal  
-  //  maxSingle(1,1);                       //  + - - - - - - -
-  //  maxSingle(2,2);                       //  - + - - - - - -
-  //  maxSingle(3,4);                       //  - - + - - - - -
-  //  maxSingle(4,8);                       //  - - - + - - - -
-  //  maxSingle(5,16);                      //  - - - - + - - -
-  //  maxSingle(6,32);                      //  - - - - - + - -
-  //  maxSingle(7,64);                      //  - - - - - - + -
-  //  maxSingle(8,128);                     //  - - - - - - - +
-
-  //  ALL ON
-  //  maxSingle(1,255);
-  //  maxSingle(2,255);
-  //  maxSingle(3,255);
-  //  maxSingle(4,255);
-  //  maxSingle(5,255);
-  //  maxSingle(6,255);
-  //  maxSingle(7,255);
-  //  maxSingle(8,255);
-
-  // flash 2 corners, then the opposite 2 corners
-  //  maxSingle(1,128);
-  //  maxSingle(8,1);
-  //  delay(500);
-  //  clearDisplay();
-  //  maxSingle(1,1);
-  //  maxSingle(8,128);
-  //  delay(500);
+   maxSingle(1,1);                       //  + - - - - - - -
+   maxSingle(2,2);                       //  - + - - - - - -
+   maxSingle(3,4);                       //  - - + - - - - -
+   maxSingle(4,8);                       //  - - - + - - - -
+   maxSingle(5,16);                      //  - - - - + - - -
+   maxSingle(6,32);                      //  - - - - - + - -
+   maxSingle(7,64);                      //  - - - - - - + -
+   maxSingle(8,128);                     //  - - - - - - - +
 
 #ifdef DEBUG_TIMER 
   loop_count++;
