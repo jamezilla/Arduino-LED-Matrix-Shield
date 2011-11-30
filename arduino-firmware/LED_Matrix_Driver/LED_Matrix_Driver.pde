@@ -65,82 +65,66 @@ inline void putByte(byte data) {
 
   // == bit 8 (most significant)
   fastDigitalWrite(clk_port, clk_bitmask, LOW);    // tick
-
   if (data & 0x80)            // choose bit
     fastDigitalWrite(din_port, din_bitmask, HIGH);// send 1
   else 
     fastDigitalWrite(din_port, din_bitmask, LOW); // send 0
-
   fastDigitalWrite(clk_port, clk_bitmask, HIGH);   // tock
 
   // == bit 7
   fastDigitalWrite(clk_port, clk_bitmask, LOW);    // tick
-
   if (data & 0x40)
     fastDigitalWrite(din_port, din_bitmask, HIGH);// send 1
   else 
     fastDigitalWrite(din_port, din_bitmask, LOW); // send 0
-
   fastDigitalWrite(clk_port, clk_bitmask, HIGH);   // tock
 
   // == bit 6
   fastDigitalWrite(clk_port, clk_bitmask, LOW);    // tick
-
   if (data & 0x20)
     fastDigitalWrite(din_port, din_bitmask, HIGH);// send 1
   else 
     fastDigitalWrite(din_port, din_bitmask, LOW); // send 0
-
   fastDigitalWrite(clk_port, clk_bitmask, HIGH);   // tock
 
   // == bit 5
   fastDigitalWrite(clk_port, clk_bitmask, LOW);    // tick
-
   if (data & 0x10)
     fastDigitalWrite(din_port, din_bitmask, HIGH);// send 1
   else 
     fastDigitalWrite(din_port, din_bitmask, LOW); // send 0
-
   fastDigitalWrite(clk_port, clk_bitmask, HIGH);   // tock
 
   // == bit 4
   fastDigitalWrite(clk_port, clk_bitmask, LOW);    // tick
-
   if (data & 0x8)
     fastDigitalWrite(din_port, din_bitmask, HIGH);// send 1
   else 
     fastDigitalWrite(din_port, din_bitmask, LOW); // send 0
-
   fastDigitalWrite(clk_port, clk_bitmask, HIGH);   // tock
 
   // == bit 3
   fastDigitalWrite(clk_port, clk_bitmask, LOW);    // tick
-
   if (data & 0x4)
     fastDigitalWrite(din_port, din_bitmask, HIGH);// send 1
   else 
     fastDigitalWrite(din_port, din_bitmask, LOW); // send 0
-
   fastDigitalWrite(clk_port, clk_bitmask, HIGH);   // tock
 
   // == bit 2
   fastDigitalWrite(clk_port, clk_bitmask, LOW);    // tick
-
   if (data & 0x2)
     fastDigitalWrite(din_port, din_bitmask, HIGH);// send 1
   else 
     fastDigitalWrite(din_port, din_bitmask, LOW); // send 0
-
   fastDigitalWrite(clk_port, clk_bitmask, HIGH);   // tock
 
   // == bit 1 (least significant)
   fastDigitalWrite(clk_port, clk_bitmask, LOW);    // tick
-
   if (data & 0x01)
     fastDigitalWrite(din_port, din_bitmask, HIGH);// send 1
   else 
     fastDigitalWrite(din_port, din_bitmask, LOW); // send 0
-
   fastDigitalWrite(clk_port, clk_bitmask, HIGH);   // tock
 
 }
