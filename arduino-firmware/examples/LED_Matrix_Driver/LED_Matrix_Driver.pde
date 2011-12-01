@@ -12,20 +12,20 @@
 int e = 0;
 
 // define max7219 registers
-byte max7219_reg_noop        = 0x00;
-byte max7219_reg_digit0      = 0x01;
-byte max7219_reg_digit1      = 0x02;
-byte max7219_reg_digit2      = 0x03;
-byte max7219_reg_digit3      = 0x04;
-byte max7219_reg_digit4      = 0x05;
-byte max7219_reg_digit5      = 0x06;
-byte max7219_reg_digit6      = 0x07;
-byte max7219_reg_digit7      = 0x08;
-byte max7219_reg_decodeMode  = 0x09;
-byte max7219_reg_intensity   = 0x0a;
-byte max7219_reg_scanLimit   = 0x0b;
-byte max7219_reg_shutdown    = 0x0c;
-byte max7219_reg_displayTest = 0x0f;
+#define MAX7219_REG_NOOP        0x00
+#define MAX7219_REG_DIGIT0      0x01
+#define MAX7219_REG_DIGIT1      0x02
+#define MAX7219_REG_DIGIT2      0x03
+#define MAX7219_REG_DIGIT3      0x04
+#define MAX7219_REG_DIGIT4      0x05
+#define MAX7219_REG_DIGIT5      0x06
+#define MAX7219_REG_DIGIT6      0x07
+#define MAX7219_REG_DIGIT7      0x08
+#define MAX7219_REG_DECODEMODE  0x09
+#define MAX7219_REG_INTENSITY   0x0a
+#define MAX7219_REG_SCANLIMIT   0x0b
+#define MAX7219_REG_SHUTDOWN    0x0c
+#define MAX7219_REG_DISPLAYTEST 0x0f
 
 // Output/input registers and bitmasks
 volatile uint8_t *clk_port;
@@ -142,26 +142,26 @@ void initDisplay(void) {
   fastDigitalWrite(clk_port, clk_bitmask, HIGH);  
 
   // set the scan limit so it displays all digits
-  putByte(max7219_reg_scanLimit);
+  putByte(MAX7219_REG_SCANLIMIT);
   putByte(0x07);
 
   // using an led matrix (not digits)
-  putByte(max7219_reg_decodeMode);
+  putByte(MAX7219_REG_DECODEMODE);
   putByte(0x00);  
 
   // not in shutdown mode
-  putByte(max7219_reg_shutdown);
+  putByte(MAX7219_REG_SHUTDOWN);
   putByte(0x01);    
 
   // no display test
-  putByte(max7219_reg_displayTest);
+  putByte(MAX7219_REG_DISPLAYTEST);
   putByte(0x00);   
 
   clearDisplay();
 
   // set the brightness, the first 0x0f is the value you can set
   // range: 0x00 to 0x0f
-  putByte(max7219_reg_intensity);
+  putByte(MAX7219_REG_INTENSITY);
   putByte(0x0f & 0x0f);     
 
 }
@@ -262,23 +262,3 @@ void loop () {
   loop_count++;
 #endif
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

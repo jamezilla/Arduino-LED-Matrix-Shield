@@ -1,0 +1,24 @@
+#######################################
+# Syntax Coloring Map For Matrix
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
+MatrixDriver	KEYWORD1
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+
+setBrightness	KEYWORD2
+write	KEYWORD2
+clear	KEYWORD2
+getBuffer	KEYWORD2
+update	KEYWORD2
+
+#######################################
+# Constants (LITERAL1)
+#######################################
+
